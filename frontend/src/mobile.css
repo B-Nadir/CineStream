@@ -1,0 +1,113 @@
+/* ================================
+   CineStream Mobile Overrides
+   ================================ */
+
+@media (max-width: 768px) {
+
+  /* Page layout */
+  body {
+    overflow-x: hidden;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+    margin: 16px 0;
+  }
+
+  /* Grid adjustments */
+  .movie-card,
+  .cinematic-card {
+    transform: none !important;
+  }
+
+  /* Reduce columns */
+  .movie-grid,
+  .series-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  /* Poster sizing */
+  .poster-wrapper img {
+    border-radius: 12px;
+  }
+
+  /* Card overlay */
+  .card-overlay {
+    padding: 8px;
+  }
+
+  .card-title {
+    font-size: 0.85rem;
+    line-height: 1.2;
+  }
+
+  .card-meta {
+    font-size: 0.7rem;
+    gap: 6px;
+  }
+
+  /* Search & filters */
+  .filter-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  /* Buttons */
+  .cinematic-button {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Pagination */
+  .pagination {
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  /* Watchlist page */
+  .watchlist-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Detail page */
+  .detail-container {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .detail-poster {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .detail-info {
+    padding: 0;
+    margin-top: 16px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+
+  .movie-grid,
+  .series-grid,
+  .watchlist-grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+  }
+
+  .card-meta {
+    font-size: 0.65rem;
+  }
+}

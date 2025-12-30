@@ -1,0 +1,514 @@
+:root {
+  /* 2️⃣ COLOR SYSTEM */
+  --bg-primary: #0b0b0f;
+  --bg-secondary: #111118;
+  --text-primary: #eaeaf0;
+  --text-secondary: #a0a0b2;
+  --text-meta: #6b6b80;/* --- Centered Loading Animation --- */
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #e50914; /* Theme color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* --- Staggered "One by One" Animation --- */
+  .movie-card {
+    opacity: 0; /* Start hidden */
+    animation: fadeInUp 0.5s ease forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* --- Details Page Styling --- */
+  .details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    color: white;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .details-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .vertical-poster {
+    width: 300px;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 25px;
+  }
+  
+  .details-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 700px;
+    color: #e0e0e0;
+  }
+  
+  /* --- OTT Logos --- */
+  .ott-section {
+    margin-top: 20px;
+  }
+  
+  .ott-logos {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  
+  .ott-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Style for available platforms */
+  .ott-icon.available {
+    filter: none;
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+  
+  /* Style for unavailable platforms (Greyed out) */
+  .ott-icon.unavailable {
+    filter: grayscale(100%);
+    opacity: 0.3;
+  }
+  
+  
+  /* 3️⃣ DEPTH SYSTEM */
+  --card-radius: 12px;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
+  
+  /* 7️⃣ MOTION PRINCIPLES */
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-ui: 300ms;
+}
+
+body {
+  background: linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary));
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* 4️⃣ CARD LOGIC */
+.cinematic-card {
+  position: relative;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background-color: #1a1a20;
+  transition: transform var(--duration-ui) var(--ease-cinematic), 
+              box-shadow var(--duration-ui) var(--ease-cinematic);
+  cursor: pointer;
+  /* Remove fixed width constraints here to let Grid handle layout, 
+     but ensure it doesn't collapse */
+  min-width: 140px; 
+}
+
+.cinematic-card:hover {
+  transform: scale(1.04) rotate(1deg);
+  box-shadow: var(--shadow-hover);
+  z-index: 2;
+}
+
+.poster-wrapper {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+}
+
+.poster-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.cinematic-card:hover .poster-wrapper img {
+  transform: scale(1.08); /* Subtle zoom on poster */
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.6) 50%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.card-meta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 8️⃣ GLASSMORPHISM UTILITY */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* --- PHASE F11: NAVBAR --- */
+.cinematic-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.cinematic-navbar a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 200ms var(--ease-cinematic);
+}
+
+.cinematic-navbar a:hover,
+.cinematic-navbar a.active {
+  color: var(--text-primary);
+}
+
+.cinematic-navbar .logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin-right: auto; /* Pushes auth links to the right */
+}
+
+/* --- PAGE LAYOUT --- */
+.main-content {
+  padding: 80px 24px 24px 24px; /* Top padding to account for fixed navbar */
+}
+
+.page-title {
+  font-size: 2.5rem;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* --- BUTTONS --- */
+.cinematic-button {
+  background-color: rgba(30, 30, 40, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 200ms var(--ease-cinematic);
+}
+
+.cinematic-button:hover {
+  background-color: rgba(45, 45, 60, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cinematic-card .watchlist-button-wrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+}
+
+/* --- PHASE F12: CAROUSEL --- */
+.carousel-section {
+  margin-bottom: 48px;
+}
+.carousel-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-transform: capitalize;
+  color: var(--text-primary);
+}
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 16px;
+  padding-bottom: 16px; /* For shadow visibility */
+  scrollbar-width: none; /* Firefox */
+}
+.carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* --- AUTH PAGES (Login/Register) --- */
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 40px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: rgba(10, 10, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.auth-link {
+  text-align: center;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-top: 16px;
+  display: block;
+}
+
+.auth-link:hover {
+  color: var(--text-primary);
+}
+
+/* --- FILTERS & SEARCH --- */
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.filter-select {
+  padding: 10px 16px;
+  background: #1a1a20;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+}
+
+/* --- PAGINATION --- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 40px 0;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- GENRE FILTERS --- */
+.genre-filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.genre-pill {
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.genre-pill:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.genre-pill.active {
+  background: #e50914;
+  border-color: #e50914;
+  color: white;
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+}
+
+/* --- HERO WATCHLIST BUTTON --- */
+.watchlist-hero-btn {
+  background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+  color: white;
+  border: none;
+  padding: 16px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.watchlist-hero-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(229, 9, 20, 0.5);
+}
+
+.watchlist-hero-btn:active {
+  transform: translateY(1px);
+}
+
+.watchlist-hero-btn.in-list {
+  background: linear-gradient(135deg, #2a2a35 0%, #1a1a20 100%);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  color: #a0a0b2;
+}
+
+.watchlist-hero-btn.in-list:hover {
+  color: white;
+  background: linear-gradient(135deg, #3a3a45 0%, #2a2a30 100%);
+}
+
+.grid {
+  display: grid;
+}
+
+.watchlist-icon-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: all 0.25s ease;
+  z-index: 3;
+}
+
+.watchlist-icon-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(229, 9, 20, 0.5);
+}
+
+.watchlist-icon-btn.saved {
+  background: #e50914;
+  color: white;
+  border-color: #e50914;
+}
+
+.watchlist-icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: cinestream-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - redis
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: cinestream-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: cinestream-redis
+    ports:
+      - "6379:6379"
+    restart: always
